@@ -1,10 +1,10 @@
-Este proyecto fue construido con el framework .NET 8 utilizando una arquitectura de tipo Domain-Centric (Hexagonal, Clean, Onion).
+Este proyecto fue construido con el Framework .NET 8 utilizando una arquitectura de tipo Domain-Centric (Hexagonal, Clean, Onion).
 
 Responsabilidades del Proyecto
 El proyecto se enfoca en las operaciones básicas de un CRUD para productos, expuestos a través de un API RESTful. La documentación de los endpoints puede consultarse en el propio código del proyecto, donde se incluyen ejemplos de uso y especificaciones de cada endpoint.
 
 Pasos previos para iniciar el proyecto
-El único requisito para iniciar este microservicio es crear una base de datos en MySQL y configurar las credenciales en el archivo appsettings.json. Luego, se debe ejecutar el comando: Update-Database desde la ventana de Package Manager Console, seleccionando el proyecto de Infrastructure. Esto aplicará las migraciones y creará las tablas necesarias en la base de datos.
+El único requisito para iniciar este microservicio es crear una base de datos en SQLServer y configurar las credenciales en el archivo appsettings.json. Luego, se debe ejecutar el comando: [Update-Database] desde la ventana de Package Manager Console, seleccionando el proyecto de Infrastructure. Esto aplicará las migraciones y creará las tablas necesarias en la base de datos.
 
 Patrones y Estilos de Arquitectura Implementados
 
@@ -59,15 +59,35 @@ Swagger: Documentación automática de los endpoints.
 Estructura del Proyecto
 El proyecto sigue una estructura modular para facilitar el mantenimiento y la escalabilidad:
 
-Api: Punto de entrada del sistema, API REST.
+Persistence (Mantenimiento de datos):
 
-Api.Tests: Pruebas de integración para la API.
+- Infrastructure (Adaptadores para bases de datos, configuración de contexto, migraciones)
 
-Application: Capa de orquestación de servicios de dominio (ports, commands, queries, handlers).
+- Repository (Implementaciones de repositorios)
 
-Infrastructure: Adaptadores para persistencia y acceso a datos.
+Domain (Núcleo de tu dominio):
 
-Domain: Entidades, objetos de valor, servicios de dominio y agregados.
+- Entities (Clases que representan las entidades del dominio)
+
+- ValueObjects (Objetos que definen valores específicos del dominio)
+
+- Ports (Interfaces que definen los puntos de entrada y salida)
+
+- DomainServices (Lógica de negocio pura del dominio)
+
+- Aggregates (Conjuntos de entidades que deben tratarse como una unidad)
+
+API (Punto de entrada a la aplicación):
+
+- Controllers (Controladores de la API REST)
+
+- Middlewares (Manejo de seguridad, autenticación, autorización)
+
+- DTOs (Objetos para transferir datos entre capas)
+
+Tests (Pruebas de integración y unitarias):
+
+- UnitTests (Pruebas de las funciones del dominio)
 
 CI/CD
 El proyecto está configurado para despliegues automatizados usando GitHub Actions, sin depender de servicios como Azure:
@@ -85,3 +105,35 @@ Las aplicaciones están listas para ser dockerizadas, lo que facilita su desplie
 Despliegue Automático:
 
 Los despliegues se manejan automáticamente a través de GitHub Actions tras cada push o merge a las ramas main o master.
+
+Frontend:
+Patrones y Estilos de Arquitectura Implementados.
+
+Arquitectura Basada en Componentes (Component-Based Architecture):
+El proyecto tiene la arquitectura basada en componentes. Significa que la aplicación se divide en pequeñas piezas reutilizables y encapsuladas que gestionan su propio estado y lógica.
+
+Inyección de Dependencias (Dependency Injection - DI):
+Inyección de dependencias para gestionar servicios de manera eficiente. Los servicios se inyectan automáticamente en los componentes que los requieran.
+
+Standalone Components:
+Se usan componentes standalone, que eliminan la necesidad de módulos como NgModule para cada componente, simplificando la estructura.
+
+Rutas Protegidas (Route Guards):
+Se implementó AuthGuard para proteger las rutas y restringir el acceso a usuarios autenticados.
+
+Manejo de Estado Local (Local Storage):
+Se usa localStorage para almacenar información del usuario autenticado y sus favoritos, manteniendo el estado entre recargas de página.
+
+Servicios para Lógica de Negocio (Business Logic Separation):
+Se ha separado la lógica de negocio en servicios como AuthService, FavoritesService, y AlertsService para mantener los componentes ligeros y enfocados en la presentación.
+
+Modularización del Estilo (SCSS y Angular Material):
+Se usa SCSS para modularizar los estilos y Angular Material para una mejor experiencia de usuario.
+
+Manejo de Estados Asíncronos (Spinner Loading States):
+Se implementó loaders (mat-progress-spinner) para manejar estados de carga, mejorando la experiencia del usuario.
+
+Manejo de Errores con SweetAlert2:
+Se usó SweetAlert2 para mostrar errores de manera más profesional, en lugar de simples alert() del navegador.
+
+
